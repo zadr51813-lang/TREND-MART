@@ -50,21 +50,20 @@ function renderProducts(){
      p.category.toLowerCase().includes(q))
   );
 
-  if(sort.value === "low") list.sort((a,b)=>a.price-b.price);
-  if(sort.value === "high") list.sort((a,b)=>b.price-a.price);
+  if(sort.value === "low") list.sort((a,b) => a.price - b.price);
+  if(sort.value === "high") list.sort((a,b) => b.price - a.price);
 
   grid.innerHTML = list.map(p => `
     <article class="product-card">
 
-      <div class="product-image"
-           style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;background:#f8f4ee;">
-
+      <div class="product-image">
         ${p.images.map(img => `
-          <img src="${img}"
-               alt="${p.name}"
-               style="width:100%;min-width:100%;height:360px;object-fit:cover;flex:0 0 100%;scroll-snap-align:start;display:block;">
+          <img
+            src="${img}"
+            alt="${p.name}"
+            style="width:100%;height:360px;object-fit:cover;display:block;"
+          >
         `).join("")}
-
       </div>
 
       <div class="product-info">
@@ -77,35 +76,33 @@ function renderProducts(){
           ${p.description}
         </p>
 
-        <div style="margin:12px 0;">
-          <span style="text-decoration:line-through;color:#999;font-size:16px;">
+        <div class="price">
+          <span style="text-decoration:line-through;color:#999;">
             ${money(p.oldPrice)}
           </span>
-
-          <strong style="font-size:26px;margin-left:8px;">
+          <strong style="margin-left:8px;">
             ${money(p.price)}
           </strong>
-
-          <span style="background:#111;color:#fff;padding:5px 8px;border-radius:5px;margin-left:8px;font-size:12px;">
-            50% OFF
-          </span>
         </div>
 
-        <div style="display:flex;flex-wrap:wrap;gap:7px;margin:12px 0;">
+        <p style="font-weight:bold;margin:8px 0;">
+          50% OFF
+        </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
           ${p.features.map(f => `
-            <span style="border:1px solid #ddd;border-radius:20px;padding:6px 10px;font-size:12px;">
+            <span style="border:1px solid #ddd;border-radius:20px;padding:5px 9px;font-size:12px;">
               ✓ ${f}
             </span>
           `).join("")}
         </div>
 
-        <button class="add"
-                onclick="addToCart(${p.id})"
-                style="width:100%;margin-top:10px;">
+        <button class="add" onclick="addToCart(${p.id})">
           Add to Cart
         </button>
 
       </div>
+
     </article>
   `).join("");
 
