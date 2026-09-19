@@ -12,11 +12,10 @@ const products = [
     oldPrice: 899,
     icon: "❤️",
     images: [
-      "heart-lifestyle.jpg",
-      "heart-model.jpg",
-      "heart-premium.jpg",
-      "heart-details.jpg"
-    ],
+  "heart-model.jpg",
+  "heart-premium.jpg",
+  "heart-details.jpg"
+],
     description: "Elegant heart pendant necklace crafted for a timeless and stylish look. Made for everyday wear with a beautiful polished finish. Lightweight, comfortable and perfect for gifting.",
     features: [
       "Anti-Tarnish",
