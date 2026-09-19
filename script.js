@@ -44,25 +44,74 @@ function money(n){ return "₹" + n.toLocaleString("en-IN"); }
 
 function renderProducts(){
   const q = search.value.trim().toLowerCase();
+
   let list = products.filter(p =>
     (activeFilter === "All" || p.category === activeFilter) &&
-    (p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+    (p.name.toLowerCase().includes(q) ||
+     p.category.toLowerCase().includes(q))
   );
+
   if(sort.value === "low") list.sort((a,b)=>a.price-b.price);
   if(sort.value === "high") list.sort((a,b)=>b.price-a.price);
 
   grid.innerHTML = list.map(p => `
     <article class="product-card">
-      <div class="product-image"><div class="placeholder">${p.icon}</div></div>
+
+      <div class="product-image"
+           style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;background:#f8f4ee;">
+
+        ${p.images.map(img => `
+          <img src="${img}"
+               alt="${p.name}"
+               style="width:100%;min-width:100%;height:360px;object-fit:cover;flex:0 0 100%;scroll-snap-align:start;display:block;">
+        `).join("")}
+
+      </div>
+
       <div class="product-info">
+
         <span class="tag">${p.category}</span>
+
         <h3>${p.name}</h3>
-        <div class="price">${money(p.price)}</div>
-        <button class="add" onclick="addToCart(${p.id})">Add to Cart</button>
+
+        <p style="color:#666;line-height:1.6;margin:10px 0;">
+          ${p.description}
+        </p>
+
+        <div style="margin:12px 0;">
+          <span style="text-decoration:line-through;color:#999;font-size:16px;">
+            ${money(p.oldPrice)}
+          </span>
+
+          <strong style="font-size:26px;margin-left:8px;">
+            ${money(p.price)}
+          </strong>
+
+          <span style="background:#111;color:#fff;padding:5px 8px;border-radius:5px;margin-left:8px;font-size:12px;">
+            50% OFF
+          </span>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin:12px 0;">
+          ${p.features.map(f => `
+            <span style="border:1px solid #ddd;border-radius:20px;padding:6px 10px;font-size:12px;">
+              ✓ ${f}
+            </span>
+          `).join("")}
+        </div>
+
+        <button class="add"
+                onclick="addToCart(${p.id})"
+                style="width:100%;margin-top:10px;">
+          Add to Cart
+        </button>
+
       </div>
     </article>
   `).join("");
+
   empty.hidden = list.length !== 0;
+}
 }
 
 function addToCart(id){
