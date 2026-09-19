@@ -4,14 +4,28 @@
 // Replace the emoji with image paths later if needed.
 // ===============================
 const products = [
-  {id:1,name:"Luxe Pendant",category:"Jewellery",price:799,icon:"💎"},
-  {id:2,name:"Elegant Gold Set",category:"Jewellery",price:1299,icon:"✨"},
-  {id:3,name:"Classic Tote",category:"Accessories",price:999,icon:"👜"},
-  {id:4,name:"Signature Watch",category:"Accessories",price:1499,icon:"⌚"},
-  {id:5,name:"Premium Kurti",category:"Fashion",price:899,icon:"👗"},
-  {id:6,name:"Luxe Scarf",category:"Fashion",price:499,icon:"🧣"},
-  {id:7,name:"Home Glow Set",category:"Lifestyle",price:699,icon:"🕯️"},
-  {id:8,name:"Gift Box",category:"Lifestyle",price:599,icon:"🎁"}
+  {
+    id: 1,
+    name: "Heart Pendant Necklace (tarnish proof)",
+    category: "Jewellery",
+    price: 449,
+    oldPrice: 899,
+    icon: "❤️",
+    images: [
+      "heart-lifestyle.jpg",
+      "heart-model.jpg",
+      "heart-premium.jpg",
+      "heart-details.jpg"
+    ],
+    description: "Elegant heart pendant necklace crafted for a timeless and stylish look. Made for everyday wear with a beautiful polished finish. Lightweight, comfortable and perfect for gifting.",
+    features: [
+      "Anti-Tarnish",
+      "Water Resistant",
+      "Lightweight",
+      "Daily Wear",
+      "Perfect Gift"
+    ]
+  }
 ];
 
 let cart = JSON.parse(localStorage.getItem("tml_cart") || "[]");
@@ -126,9 +140,29 @@ document.getElementById("menuBtn").onclick=()=>document.getElementById("navMenu"
 document.querySelectorAll("#navMenu a").forEach(a=>a.onclick=()=>document.getElementById("navMenu").classList.remove("open"));
 
 document.getElementById("checkoutBtn").onclick=()=>{
-  if(!cart.length){showToast("Cart is empty");return;}
-  // Replace this alert with your WhatsApp/payment/order API later.
-  showToast("Order flow ready — connect WhatsApp/payment next.");
+  if(!cart.length){
+    showToast("Cart is empty");
+    return;
+  }
+
+  let message = "Hello Trend Mart Luxe!%0A%0AI want to place an order:%0A";
+
+  cart.forEach(item=>{
+    const p = products.find(x=>x.id===item.id);
+    if(p){
+      message += `%0A${p.name} x ${item.qty} — ₹${p.price * item.qty}`;
+    }
+  });
+
+  const total = cart.reduce((sum,item)=>{
+    const p = products.find(x=>x.id===item.id);
+    return sum + (p ? p.price * item.qty : 0);
+  },0);
+
+  message += `%0A%0ATotal: ₹${total}`;
+  message += "%0A%0AName:%0AAddress:%0APhone:";
+
+  window.open("https://wa.me/918369511325?text="+message,"_blank");
 };
 
 document.getElementById("year").textContent=new Date().getFullYear();
